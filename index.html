@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Artist Run Program</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="screen active" id="login-screen" aria-labelledby="login-title">
+        <div class="panel login-panel">
+          <h1 id="login-title">Artist Login</h1>
+          <label class="field">
+            <span>Artist</span>
+            <input id="artist-name" type="text" list="artist-list" autocomplete="off" placeholder="JC">
+          </label>
+          <datalist id="artist-list"></datalist>
+          <label class="field">
+            <span>Password</span>
+            <input id="artist-password" type="password" placeholder="Password">
+          </label>
+          <p class="hint">Artist accounts only</p>
+          <p class="error-message" id="login-error" role="alert"></p>
+          <button class="primary-button" id="login-button" type="button">Log In</button>
+        </div>
+      </section>
+
+      <section class="screen" id="admin-screen" aria-labelledby="admin-title">
+        <div class="panel admin-panel">
+          <header class="admin-header">
+            <div>
+              <span class="eyebrow">Settings</span>
+              <h1 id="admin-title">Artist Admin</h1>
+            </div>
+            <button class="secondary-button small-button" id="admin-back-button" type="button">Back</button>
+          </header>
+
+          <div id="admin-manager" class="admin-manager">
+            <form id="artist-form" class="artist-form">
+              <label class="field">
+                <span>Artist Name</span>
+                <input id="new-artist-name" type="text" autocomplete="off" placeholder="JC">
+              </label>
+              <label class="field">
+                <span>Password</span>
+                <input id="new-artist-password" type="text" autocomplete="off" placeholder="1234">
+              </label>
+              <button class="primary-button" type="submit">Add / Update Artist</button>
+            </form>
+
+            <div class="artist-list-panel">
+              <h2>Artists</h2>
+              <div id="admin-artist-list" class="admin-artist-list"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="entry-screen" aria-labelledby="entry-title">
+        <form class="panel entry-panel" id="entry-form">
+          <header class="entry-header">
+            <div>
+              <span class="eyebrow">Artist</span>
+              <h1 id="entry-title"><span id="current-artist">JC</span></h1>
+            </div>
+            <time id="current-time"></time>
+          </header>
+
+          <div class="section-block">
+            <label class="field">
+              <span>Client</span>
+              <input id="client-name" type="text" list="client-list" autocomplete="off" placeholder="Gianna Casanova" required>
+            </label>
+            <datalist id="client-list"></datalist>
+          </div>
+
+          <div class="section-block">
+            <label class="field">
+              <span>Appointment type</span>
+              <select id="appointment-type" required></select>
+            </label>
+          </div>
+
+          <div class="grid-two">
+            <div class="section-block">
+              <label class="field money-field">
+                <span>Tattoo Price</span>
+                <input id="tattoo-price" type="number" min="0" step="1" placeholder="150" required>
+              </label>
+              <label class="field payment-field">
+                <span>Payment type</span>
+                <select id="tattoo-payment" required></select>
+              </label>
+            </div>
+
+            <div class="section-block">
+              <label class="field money-field">
+                <span>Tip</span>
+                <input id="tip-amount" type="number" min="0" step="1" placeholder="50" required>
+              </label>
+              <label class="field payment-field">
+                <span>Payment type</span>
+                <select id="tip-payment" required></select>
+              </label>
+            </div>
+          </div>
+
+          <div class="section-block">
+            <label class="field">
+              <span>Memo</span>
+              <textarea id="memo" rows="3" placeholder="I Love U"></textarea>
+            </label>
+          </div>
+
+          <button class="primary-button wide" id="enter-button" type="submit" disabled>Enter</button>
+        </form>
+      </section>
+
+      <section class="screen" id="result-screen" aria-labelledby="result-title">
+        <div class="panel result-panel">
+          <div class="receipt" id="receipt">
+            <header class="receipt-header">
+              <strong id="receipt-artist">JC</strong>
+              <time id="receipt-time"></time>
+            </header>
+            <dl class="receipt-grid">
+              <dt>Client</dt>
+              <dd id="receipt-client"></dd>
+              <dt>Appointment Type</dt>
+              <dd id="receipt-appointment"></dd>
+              <dt>Tattoo Price</dt>
+              <dd><span id="receipt-price"></span> <span id="receipt-price-payment"></span></dd>
+              <dt>Tip</dt>
+              <dd><span id="receipt-tip"></span> <span id="receipt-tip-payment"></span></dd>
+              <dt>Memo</dt>
+              <dd id="receipt-memo"></dd>
+            </dl>
+          </div>
+          <div class="result-actions">
+            <button class="primary-button" id="submit-button" type="button">Submit</button>
+            <button class="secondary-button" id="back-button" type="button">Go Back</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="print-screen" aria-labelledby="print-title">
+        <div class="panel print-panel">
+          <h1 id="print-title">Thank You <span id="print-artist">JC</span>!</h1>
+          <p>Would you like to print?</p>
+          <button class="primary-button" id="print-button" type="button">Print</button>
+          <button class="secondary-button" id="close-button" type="button">Close</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

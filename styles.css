@@ -1,0 +1,439 @@
+:root {
+  --ink: #191b1f;
+  --muted: #616873;
+  --line: #cfd5de;
+  --paper: #fbfaf7;
+  --surface: #ffffff;
+  --accent: #236c8f;
+  --accent-dark: #164b65;
+  --danger: #b3261e;
+  --shadow: 0 18px 50px rgba(20, 28, 34, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    linear-gradient(135deg, rgba(35, 108, 143, 0.12), rgba(214, 224, 208, 0.26)),
+    #eef1ed;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding: 28px 16px;
+  place-items: center;
+}
+
+.screen.active {
+  display: grid;
+}
+
+.panel {
+  width: min(100%, 720px);
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.login-panel,
+.print-panel {
+  max-width: 430px;
+  padding: 28px;
+}
+
+.login-panel h1,
+.print-panel h1,
+.admin-header h1 {
+  margin: 0 0 22px;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.field span {
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  padding: 12px 13px;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(35, 108, 143, 0.14);
+}
+
+.hint {
+  margin: -5px 0 12px;
+  color: var(--muted);
+}
+
+.error-message {
+  min-height: 20px;
+  margin: 0 0 12px;
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.primary-button,
+.secondary-button {
+  width: 100%;
+  min-height: 48px;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: var(--accent);
+  color: #fff;
+}
+
+.primary-button:hover {
+  background: var(--accent-dark);
+}
+
+.secondary-button {
+  background: #fff;
+  color: var(--ink);
+}
+
+.small-button {
+  width: auto;
+  min-width: 90px;
+}
+
+.primary-button:disabled {
+  border-color: #8c949e;
+  background: #aab3bd;
+  cursor: not-allowed;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.admin-panel {
+  max-width: 680px;
+}
+
+.admin-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 2px solid var(--ink);
+  padding: 20px 22px 0;
+}
+
+.admin-manager {
+  padding: 22px;
+}
+
+.artist-form {
+  display: grid;
+  gap: 4px;
+  padding-bottom: 22px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.artist-list-panel h2 {
+  margin: 20px 0 12px;
+  font-size: 22px;
+}
+
+.admin-artist-list {
+  display: grid;
+  gap: 10px;
+}
+
+.artist-row {
+  display: grid;
+  grid-template-columns: 1fr 150px 96px;
+  gap: 10px;
+  align-items: center;
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  padding: 10px;
+}
+
+.artist-row strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.artist-row code {
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
+
+.danger-button {
+  min-height: 40px;
+  border: 2px solid var(--danger);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--danger);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.entry-panel {
+  padding: 0;
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 2px solid var(--ink);
+  padding: 18px 22px;
+}
+
+.entry-header h1 {
+  margin: 3px 0 0;
+  font-size: 28px;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+time {
+  color: var(--ink);
+  font-weight: 800;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.section-block {
+  border-bottom: 2px solid var(--ink);
+  padding: 18px 22px;
+}
+
+.section-block:last-of-type {
+  border-bottom: 0;
+}
+
+.grid-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 2px solid var(--ink);
+}
+
+.grid-two .section-block {
+  border-bottom: 0;
+}
+
+.grid-two .section-block + .section-block {
+  border-left: 2px solid var(--ink);
+}
+
+.money-field {
+  margin-bottom: 4px;
+}
+
+.payment-field {
+  margin: 12px 0 0;
+}
+
+.payment-field span {
+  font-size: 15px;
+}
+
+.wide {
+  width: calc(100% - 44px);
+  margin: 18px 22px 22px;
+}
+
+.result-panel {
+  max-width: 760px;
+  padding: 0 0 22px;
+}
+
+.receipt {
+  border-bottom: 2px solid var(--ink);
+}
+
+.receipt-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.receipt-grid {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  margin: 0;
+}
+
+.receipt-grid dt,
+.receipt-grid dd {
+  min-height: 70px;
+  margin: 0;
+  padding: 18px 22px;
+  border-bottom: 2px solid var(--ink);
+  font-size: 20px;
+}
+
+.receipt-grid dt {
+  border-right: 2px solid var(--ink);
+  font-weight: 800;
+}
+
+.receipt-grid dd {
+  font-weight: 700;
+}
+
+.receipt-grid dt:last-of-type,
+.receipt-grid dd:last-of-type {
+  border-bottom: 0;
+}
+
+.result-actions {
+  display: grid;
+  gap: 12px;
+  max-width: 280px;
+  margin: 18px auto 0;
+}
+
+.print-panel {
+  text-align: center;
+}
+
+.print-panel p {
+  margin: 0 0 26px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.print-panel .primary-button,
+.print-panel .secondary-button {
+  margin-top: 12px;
+}
+
+@media (max-width: 640px) {
+  .entry-header,
+  .receipt-header {
+    display: grid;
+  }
+
+  time {
+    text-align: left;
+  }
+
+  .grid-two {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-two .section-block + .section-block {
+    border-left: 0;
+    border-top: 2px solid var(--ink);
+  }
+
+  .receipt-grid {
+    grid-template-columns: 130px 1fr;
+  }
+
+  .receipt-grid dt,
+  .receipt-grid dd {
+    min-height: 58px;
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .admin-header,
+  .artist-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-header {
+    display: grid;
+    padding-bottom: 18px;
+  }
+
+  .small-button {
+    width: 100%;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .screen,
+  .panel {
+    display: block !important;
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #receipt,
+  #receipt * {
+    visibility: visible;
+  }
+
+  #receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: 2px solid #000;
+    background: #fff;
+  }
+}
