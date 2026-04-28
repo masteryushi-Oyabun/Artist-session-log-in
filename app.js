@@ -6,8 +6,8 @@ const defaultArtists = [
 ];
 const adminPassword = "admin123";
 const clients = ["Gianna Casanova", "Armando Gonzales", "Chang-hee Lee"];
-const appointmentTypes = ["Walk-in", "One-Done", "On-Going", "Closing", "Touch-up", "Consultation"];
-const paymentTypes = ["Cash", "Credit Card", "Cash App", "Venmo", "Zelle"];
+const appointmentTypes = ["Walk-in", "One-Done", "On-Going", "Closing"];
+const paymentTypes = ["Cash", "Credit Card", "Venmo, Zelle, Cash App"];
 
 const state = {
   artist: "",
