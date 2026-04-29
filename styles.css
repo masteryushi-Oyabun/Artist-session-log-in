@@ -73,6 +73,10 @@ textarea {
   margin-bottom: 18px;
 }
 
+.compact-field {
+  margin-bottom: 0;
+}
+
 .field span {
   color: var(--ink);
   font-size: 18px;
@@ -156,6 +160,26 @@ textarea:focus {
 
 .admin-panel {
   max-width: 680px;
+}
+
+.menu-panel {
+  max-width: 560px;
+}
+
+.menu-actions {
+  display: grid;
+  gap: 14px;
+  padding: 24px 22px 12px;
+}
+
+.menu-button {
+  min-height: 68px;
+  font-size: 22px;
+}
+
+.menu-logout {
+  width: calc(100% - 44px);
+  margin: 8px 22px 22px;
 }
 
 .admin-header {
@@ -267,8 +291,18 @@ time {
   border-bottom: 2px solid var(--ink);
 }
 
+.grid-two.no-border {
+  gap: 14px;
+  border-bottom: 0;
+}
+
 .grid-two .section-block {
   border-bottom: 0;
+}
+
+.grid-two.no-border .section-block,
+.grid-two.no-border .section-block + .section-block {
+  border: 0;
 }
 
 .grid-two .section-block + .section-block {
@@ -287,6 +321,25 @@ time {
   font-size: 15px;
 }
 
+.simple-payment {
+  margin-top: 0;
+}
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 18px 22px 22px;
+}
+
+.schedule-summary {
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
 .wide {
   width: calc(100% - 44px);
   margin: 18px 22px 22px;
@@ -302,11 +355,38 @@ time {
 }
 
 .receipt-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
   gap: 16px;
   padding: 18px 22px;
   border-bottom: 2px solid var(--ink);
+}
+
+.receipt-header-left {
+  display: grid;
+  gap: 8px;
+}
+
+.receipt-header-left strong {
+  font-size: 28px;
+}
+
+.receipt-kind {
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: #fff;
+  min-width: 210px;
+  padding: 18px 28px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.receipt-header time {
+  justify-self: start;
+  text-align: left;
+  white-space: pre-line;
 }
 
 .receipt-grid {
@@ -364,13 +444,27 @@ time {
   .entry-header,
   .receipt-header {
     display: grid;
+    grid-template-columns: 1fr;
   }
 
   time {
     text-align: left;
   }
 
+  .receipt-header time {
+    justify-self: start;
+  }
+
+  .receipt-kind {
+    min-width: 0;
+    width: 100%;
+  }
+
   .grid-two {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
     grid-template-columns: 1fr;
   }
 

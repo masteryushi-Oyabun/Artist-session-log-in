@@ -8,10 +8,13 @@ const adminPassword = "admin123";
 const clients = ["Gianna Casanova", "Armando Gonzales", "Chang-hee Lee"];
 const appointmentTypes = ["Walk-in", "One-Done", "On-Going", "Closing"];
 const paymentTypes = ["Cash", "Credit Card", "Venmo, Zelle, Cash App"];
+const depositSessionTypes = ["Single", "Multiple"];
 
 const state = {
   artist: "",
   receipt: null,
+  currentMode: "Session",
+  pendingDeposit: null,
   artists: []
 };
 
@@ -35,6 +38,27 @@ function formatDateTime(date = new Date()) {
 function money(value) {
   const amount = Number(value || 0);
   return `$${amount.toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
+}
+
+function formatScheduleDate(value) {
+  if (!value) {
+    return "";
+  }
+
+  const [year, month, day] = value.split("-");
+  return `${month}-${day} ${year}`;
+}
+
+function formatScheduleTime(value) {
+  if (!value) {
+    return "";
+  }
+
+  const [hourText, minute] = value.split(":");
+  const hour = Number(hourText);
+  const period = hour >= 12 ? "PM" : "AM";
+  const displayHour = hour % 12 || 12;
+  return `${displayHour}:${minute}${period}`;
 }
 
 function escapeHtml(value) {
@@ -88,15 +112,68 @@ function validateEntry() {
   $("#enter-button").disabled = required.some((value) => !value);
 }
 
+function validateSimpleEntry() {
+  const required = [
+    $("#simple-client-name").value.trim(),
+    $("#simple-amount").value.trim(),
+    $("#simple-payment").value
+  ];
+  $("#simple-enter-button").disabled = required.some((value) => !value);
+}
+
+function validateDepositInfo() {
+  const required = [
+    $("#deposit-client-name").value.trim(),
+    $("#deposit-phone").value.trim(),
+    $("#deposit-email").value.trim(),
+    $("#deposit-subject").value.trim(),
+    $("#deposit-size").value.trim(),
+    $("#deposit-session-type").value,
+    $("#deposit-amount").value.trim(),
+    $("#deposit-payment").value
+  ];
+  $("#deposit-info-enter-button").disabled = required.some((value) => !value);
+}
+
+function validateDepositSchedule() {
+  const required = [
+    $("#deposit-schedule-date").value,
+    $("#deposit-schedule-time-input").value
+  ];
+  $("#deposit-schedule-submit-button").disabled = required.some((value) => !value);
+}
+
 function populateReceipt(receipt) {
   $("#receipt-artist").textContent = receipt.artist;
-  $("#receipt-time").textContent = receipt.dateTime;
+  $("#receipt-kind").textContent = receipt.kind;
+  $("#receipt-time").textContent = receipt.dateTime.replace(/ (\d{2}:\d{2})$/, "\n$1");
   $("#receipt-client").textContent = receipt.client;
-  $("#receipt-appointment").textContent = receipt.appointmentType;
-  $("#receipt-price").textContent = money(receipt.tattooPrice);
-  $("#receipt-price-payment").textContent = receipt.tattooPayment;
-  $("#receipt-tip").textContent = money(receipt.tip);
-  $("#receipt-tip-payment").textContent = receipt.tipPayment;
+  $("#receipt-appointment-label").classList.toggle("hidden", receipt.kind === "Deposit");
+  $("#receipt-appointment").classList.toggle("hidden", receipt.kind === "Deposit");
+  $("#receipt-appointment").textContent = receipt.kind === "Session" ? receipt.appointmentType : receipt.kind;
+  $("#receipt-details-label").classList.toggle("hidden", receipt.kind !== "Deposit");
+  $("#receipt-details").classList.toggle("hidden", receipt.kind !== "Deposit");
+  $("#receipt-details-label").textContent = receipt.kind === "Deposit" ? "Phone / Email" : "Details";
+  $("#receipt-details").textContent = receipt.kind === "Deposit" ? `${receipt.phone} | ${receipt.email}` : "";
+  $("#receipt-design-label").classList.add("hidden");
+  $("#receipt-design").classList.add("hidden");
+  $("#receipt-design").textContent = "";
+  $("#receipt-session-label").classList.toggle("hidden", receipt.kind !== "Deposit");
+  $("#receipt-session").classList.toggle("hidden", receipt.kind !== "Deposit");
+  $("#receipt-session-label").textContent = receipt.kind === "Deposit" ? "Session Type" : "Session";
+  $("#receipt-session").textContent = receipt.kind === "Deposit" ? receipt.sessionType : "";
+  $("#receipt-schedule-label").classList.toggle("hidden", receipt.kind !== "Deposit");
+  $("#receipt-schedule").classList.toggle("hidden", receipt.kind !== "Deposit");
+  $("#receipt-schedule").textContent = receipt.kind === "Deposit"
+    ? `${formatScheduleDate(receipt.scheduleDate)} ${formatScheduleTime(receipt.scheduleTime)}`
+    : "";
+  $("#receipt-price-label").textContent = receipt.kind === "Session" ? "Tattoo Price" : `${receipt.kind} Amount`;
+  $("#receipt-price").textContent = money(receipt.kind === "Session" ? receipt.tattooPrice : receipt.amount);
+  $("#receipt-price-payment").textContent = receipt.kind === "Session" ? receipt.tattooPayment : receipt.payment;
+  $("#receipt-tip-label").classList.toggle("hidden", receipt.kind !== "Session");
+  $("#receipt-tip-row").classList.toggle("hidden", receipt.kind !== "Session");
+  $("#receipt-tip").textContent = receipt.kind === "Session" ? money(receipt.tip) : "";
+  $("#receipt-tip-payment").textContent = receipt.kind === "Session" ? receipt.tipPayment : "";
   $("#receipt-memo").textContent = receipt.memo || "-";
   $("#print-artist").textContent = receipt.artist;
 }
@@ -107,8 +184,16 @@ function saveSubmission(receipt) {
   localStorage.setItem("artistRunSubmissions", JSON.stringify(previous));
 }
 
+function startMenu() {
+  const now = formatDateTime();
+  $("#menu-artist").textContent = state.artist;
+  $("#menu-time").textContent = now;
+  setScreen("menu-screen");
+}
+
 function startEntry() {
   const now = formatDateTime();
+  state.currentMode = "Session";
   $("#current-artist").textContent = state.artist;
   $("#current-time").textContent = now;
   $("#client-name").value = "";
@@ -121,6 +206,57 @@ function startEntry() {
   validateEntry();
   setScreen("entry-screen");
   $("#client-name").focus();
+}
+
+function startSimpleEntry(kind) {
+  const now = formatDateTime();
+  state.currentMode = kind;
+  $("#simple-entry-kind").textContent = kind;
+  $("#simple-entry-artist").textContent = state.artist;
+  $("#simple-entry-time").textContent = now;
+  $("#simple-amount-label").textContent = `${kind} Amount`;
+  $("#simple-client-name").value = "";
+  $("#simple-amount").value = "";
+  $("#simple-memo").value = "";
+  fillSelect("#simple-payment", paymentTypes, "Cash");
+  validateSimpleEntry();
+  setScreen("simple-entry-screen");
+  $("#simple-client-name").focus();
+}
+
+function startDepositInfo() {
+  const now = formatDateTime();
+  state.currentMode = "Deposit";
+  state.pendingDeposit = null;
+  $("#deposit-info-artist").textContent = state.artist;
+  $("#deposit-info-time").textContent = now;
+  $("#deposit-client-name").value = "";
+  $("#deposit-phone").value = "";
+  $("#deposit-email").value = "";
+  $("#deposit-subject").value = "";
+  $("#deposit-size").value = "";
+  $("#deposit-amount").value = "";
+  $("#deposit-memo").value = "";
+  fillSelect("#deposit-session-type", depositSessionTypes, "Single");
+  fillSelect("#deposit-payment", paymentTypes, "Cash");
+  validateDepositInfo();
+  setScreen("deposit-info-screen");
+  $("#deposit-client-name").focus();
+}
+
+function startDepositSchedule() {
+  const now = formatDateTime();
+  $("#deposit-schedule-artist").textContent = state.artist;
+  $("#deposit-schedule-time").textContent = now;
+  $("#deposit-schedule-summary").textContent = state.pendingDeposit
+    ? `${state.pendingDeposit.client} | ${money(state.pendingDeposit.amount)} | ${state.pendingDeposit.sessionType}`
+    : "";
+  $("#deposit-schedule-date").value = "";
+  $("#deposit-schedule-time-input").value = "";
+  $("#deposit-schedule-date").min = new Date().toISOString().slice(0, 10);
+  validateDepositSchedule();
+  setScreen("deposit-schedule-screen");
+  $("#deposit-schedule-date").focus();
 }
 
 function showAdmin() {
@@ -168,7 +304,7 @@ function wireEvents() {
 
     $("#login-error").textContent = "";
     state.artist = matchingArtist.name;
-    startEntry();
+    startMenu();
   });
 
   $("#artist-password").addEventListener("keydown", (event) => {
@@ -222,6 +358,23 @@ function wireEvents() {
     saveArtists();
   });
 
+  $("#session-button").addEventListener("click", startEntry);
+
+  $("#deposit-button").addEventListener("click", () => {
+    startDepositInfo();
+  });
+
+  $("#merch-button").addEventListener("click", () => {
+    startSimpleEntry("Merch");
+  });
+
+  $("#logout-button").addEventListener("click", () => {
+    state.artist = "";
+    $("#artist-name").value = "";
+    $("#artist-password").value = "";
+    setScreen("login-screen");
+  });
+
   $("#entry-form").addEventListener("input", validateEntry);
   $("#entry-form").addEventListener("change", validateEntry);
 
@@ -233,6 +386,7 @@ function wireEvents() {
     }
 
     const receipt = {
+      kind: "Session",
       artist: state.artist,
       dateTime: $("#current-time").textContent,
       client: $("#client-name").value.trim(),
@@ -249,6 +403,88 @@ function wireEvents() {
     setScreen("result-screen");
   });
 
+  $("#simple-entry-form").addEventListener("input", validateSimpleEntry);
+  $("#simple-entry-form").addEventListener("change", validateSimpleEntry);
+
+  $("#simple-entry-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    validateSimpleEntry();
+    if ($("#simple-enter-button").disabled) {
+      return;
+    }
+
+    const receipt = {
+      kind: state.currentMode,
+      artist: state.artist,
+      dateTime: $("#simple-entry-time").textContent,
+      client: $("#simple-client-name").value.trim(),
+      amount: $("#simple-amount").value,
+      payment: $("#simple-payment").value,
+      memo: $("#simple-memo").value.trim()
+    };
+
+    state.receipt = receipt;
+    populateReceipt(receipt);
+    setScreen("result-screen");
+  });
+
+  $("#simple-back-button").addEventListener("click", startMenu);
+
+  $("#deposit-info-form").addEventListener("input", validateDepositInfo);
+  $("#deposit-info-form").addEventListener("change", validateDepositInfo);
+
+  $("#deposit-info-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    validateDepositInfo();
+    if ($("#deposit-info-enter-button").disabled) {
+      return;
+    }
+
+    state.pendingDeposit = {
+      kind: "Deposit",
+      artist: state.artist,
+      dateTime: $("#deposit-info-time").textContent,
+      client: $("#deposit-client-name").value.trim(),
+      phone: $("#deposit-phone").value.trim(),
+      email: $("#deposit-email").value.trim(),
+      subject: $("#deposit-subject").value.trim(),
+      size: $("#deposit-size").value.trim(),
+      sessionType: $("#deposit-session-type").value,
+      amount: $("#deposit-amount").value,
+      payment: $("#deposit-payment").value,
+      memo: $("#deposit-memo").value.trim()
+    };
+
+    startDepositSchedule();
+  });
+
+  $("#deposit-info-back-button").addEventListener("click", startMenu);
+
+  $("#deposit-schedule-form").addEventListener("input", validateDepositSchedule);
+  $("#deposit-schedule-form").addEventListener("change", validateDepositSchedule);
+
+  $("#deposit-schedule-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    validateDepositSchedule();
+    if ($("#deposit-schedule-submit-button").disabled || !state.pendingDeposit) {
+      return;
+    }
+
+    const receipt = {
+      ...state.pendingDeposit,
+      scheduleDate: $("#deposit-schedule-date").value,
+      scheduleTime: $("#deposit-schedule-time-input").value
+    };
+
+    state.receipt = receipt;
+    populateReceipt(receipt);
+    setScreen("result-screen");
+  });
+
+  $("#deposit-schedule-back-button").addEventListener("click", () => {
+    setScreen("deposit-info-screen");
+  });
+
   $("#submit-button").addEventListener("click", () => {
     if (state.receipt) {
       saveSubmission(state.receipt);
@@ -257,7 +493,17 @@ function wireEvents() {
   });
 
   $("#back-button").addEventListener("click", () => {
-    setScreen("entry-screen");
+    if (state.receipt && state.receipt.kind === "Session") {
+      setScreen("entry-screen");
+      return;
+    }
+
+    if (state.receipt && state.receipt.kind === "Deposit") {
+      setScreen("deposit-schedule-screen");
+      return;
+    }
+
+    setScreen("simple-entry-screen");
   });
 
   $("#print-button").addEventListener("click", () => {
@@ -265,7 +511,7 @@ function wireEvents() {
   });
 
   $("#close-button").addEventListener("click", () => {
-    startEntry();
+    startMenu();
   });
 }
 

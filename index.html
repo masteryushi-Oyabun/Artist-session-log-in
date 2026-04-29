@@ -117,22 +117,209 @@
         </form>
       </section>
 
+      <section class="screen" id="menu-screen" aria-labelledby="menu-title">
+        <div class="panel menu-panel">
+          <header class="entry-header">
+            <div>
+              <span class="eyebrow">Artist</span>
+              <h1 id="menu-title"><span id="menu-artist">JC</span></h1>
+            </div>
+            <time id="menu-time"></time>
+          </header>
+          <div class="menu-actions">
+            <button class="primary-button menu-button" id="session-button" type="button">Session</button>
+            <button class="primary-button menu-button" id="deposit-button" type="button">Deposit</button>
+            <button class="primary-button menu-button" id="merch-button" type="button">Merch</button>
+          </div>
+          <button class="secondary-button menu-logout" id="logout-button" type="button">Log Out</button>
+        </div>
+      </section>
+
+      <section class="screen" id="simple-entry-screen" aria-labelledby="simple-entry-title">
+        <form class="panel entry-panel" id="simple-entry-form">
+          <header class="entry-header">
+            <div>
+              <span class="eyebrow" id="simple-entry-kind">Deposit</span>
+              <h1 id="simple-entry-title"><span id="simple-entry-artist">JC</span></h1>
+            </div>
+            <time id="simple-entry-time"></time>
+          </header>
+
+          <div class="section-block">
+            <label class="field">
+              <span>Client</span>
+              <input id="simple-client-name" type="text" list="client-list" autocomplete="off" placeholder="Gianna Casanova" required>
+            </label>
+          </div>
+
+          <div class="grid-two">
+            <div class="section-block">
+              <label class="field money-field">
+                <span id="simple-amount-label">Deposit Amount</span>
+                <input id="simple-amount" type="number" min="0" step="1" placeholder="100" required>
+              </label>
+            </div>
+
+            <div class="section-block">
+              <label class="field payment-field simple-payment">
+                <span>Payment type</span>
+                <select id="simple-payment" required></select>
+              </label>
+            </div>
+          </div>
+
+          <div class="section-block">
+            <label class="field">
+              <span>Memo</span>
+              <textarea id="simple-memo" rows="3" placeholder="Optional"></textarea>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="primary-button" id="simple-enter-button" type="submit" disabled>Enter</button>
+            <button class="secondary-button" id="simple-back-button" type="button">Go Back</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="screen" id="deposit-info-screen" aria-labelledby="deposit-info-title">
+        <form class="panel entry-panel" id="deposit-info-form">
+          <header class="entry-header">
+            <div>
+              <span class="eyebrow">Deposit</span>
+              <h1 id="deposit-info-title"><span id="deposit-info-artist">JC</span></h1>
+            </div>
+            <time id="deposit-info-time"></time>
+          </header>
+
+          <div class="section-block">
+            <label class="field">
+              <span>Client</span>
+              <input id="deposit-client-name" type="text" list="client-list" autocomplete="off" placeholder="Gianna Casanova" required>
+            </label>
+            <div class="grid-two no-border">
+              <label class="field compact-field">
+                <span>Phone</span>
+                <input id="deposit-phone" type="tel" placeholder="(555) 555-5555" required>
+              </label>
+              <label class="field compact-field">
+                <span>Email</span>
+                <input id="deposit-email" type="email" placeholder="client@email.com" required>
+              </label>
+            </div>
+          </div>
+
+          <div class="grid-two">
+            <div class="section-block">
+              <label class="field">
+                <span>Subject</span>
+                <input id="deposit-subject" type="text" placeholder="Dragon, flower, lettering" required>
+              </label>
+            </div>
+            <div class="section-block">
+              <label class="field">
+                <span>Size</span>
+                <input id="deposit-size" type="text" placeholder="Palm size, sleeve, 3 inches" required>
+              </label>
+            </div>
+          </div>
+
+          <div class="grid-two">
+            <div class="section-block">
+              <label class="field">
+                <span>Session Type</span>
+                <select id="deposit-session-type" required></select>
+              </label>
+            </div>
+            <div class="section-block">
+              <label class="field money-field">
+                <span>Deposit</span>
+                <input id="deposit-amount" type="number" min="0" step="1" placeholder="150" required>
+              </label>
+              <label class="field payment-field">
+                <span>Payment type</span>
+                <select id="deposit-payment" required></select>
+              </label>
+            </div>
+          </div>
+
+          <div class="section-block">
+            <label class="field">
+              <span>Memo</span>
+              <textarea id="deposit-memo" rows="3" placeholder="Optional"></textarea>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="primary-button" id="deposit-info-enter-button" type="submit" disabled>Enter</button>
+            <button class="secondary-button" id="deposit-info-back-button" type="button">Go Back</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="screen" id="deposit-schedule-screen" aria-labelledby="deposit-schedule-title">
+        <form class="panel entry-panel" id="deposit-schedule-form">
+          <header class="entry-header">
+            <div>
+              <span class="eyebrow">Schedule</span>
+              <h1 id="deposit-schedule-title"><span id="deposit-schedule-artist">JC</span></h1>
+            </div>
+            <time id="deposit-schedule-time"></time>
+          </header>
+
+          <div class="section-block">
+            <p class="schedule-summary" id="deposit-schedule-summary"></p>
+          </div>
+
+          <div class="grid-two">
+            <div class="section-block">
+              <label class="field">
+                <span>Appointment Date</span>
+                <input id="deposit-schedule-date" type="date" required>
+              </label>
+            </div>
+            <div class="section-block">
+              <label class="field">
+                <span>Time</span>
+                <input id="deposit-schedule-time-input" type="time" required>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="primary-button" id="deposit-schedule-submit-button" type="submit" disabled>Submit</button>
+            <button class="secondary-button" id="deposit-schedule-back-button" type="button">Go Back</button>
+          </div>
+        </form>
+      </section>
+
       <section class="screen" id="result-screen" aria-labelledby="result-title">
         <div class="panel result-panel">
           <div class="receipt" id="receipt">
             <header class="receipt-header">
-              <strong id="receipt-artist">JC</strong>
-              <time id="receipt-time"></time>
+              <div class="receipt-header-left">
+                <strong id="receipt-artist">JC</strong>
+                <time id="receipt-time"></time>
+              </div>
+              <strong class="receipt-kind" id="receipt-kind">Session</strong>
             </header>
             <dl class="receipt-grid">
               <dt>Client</dt>
               <dd id="receipt-client"></dd>
-              <dt>Appointment Type</dt>
+              <dt id="receipt-details-label">Details</dt>
+              <dd id="receipt-details"></dd>
+              <dt id="receipt-design-label">Subject / Size</dt>
+              <dd id="receipt-design"></dd>
+              <dt id="receipt-session-label">Session</dt>
+              <dd id="receipt-session"></dd>
+              <dt id="receipt-appointment-label">Appointment Type</dt>
               <dd id="receipt-appointment"></dd>
-              <dt>Tattoo Price</dt>
-              <dd><span id="receipt-price"></span> <span id="receipt-price-payment"></span></dd>
-              <dt>Tip</dt>
-              <dd><span id="receipt-tip"></span> <span id="receipt-tip-payment"></span></dd>
+              <dt id="receipt-schedule-label">Schedule</dt>
+              <dd id="receipt-schedule"></dd>
+              <dt id="receipt-price-label">Tattoo Price</dt>
+              <dd id="receipt-price-row"><span id="receipt-price"></span> <span id="receipt-price-payment"></span></dd>
+              <dt id="receipt-tip-label">Tip</dt>
+              <dd id="receipt-tip-row"><span id="receipt-tip"></span> <span id="receipt-tip-payment"></span></dd>
               <dt>Memo</dt>
               <dd id="receipt-memo"></dd>
             </dl>
